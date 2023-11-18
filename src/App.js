@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+document.body.style = 'background: aqua;';
+
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -22,17 +24,23 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return "Winner: "+ squares[a];
     }
   }
-  return null;
+  let tie = true;
+  for(let i = 0; i<squares.length; i++){
+    if(squares[i] === null){
+      tie = false;
+    }
+  }
+  return tie? 'Tie' :null;
 }
 
 function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = winner;
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
@@ -93,8 +101,8 @@ export default function Game() {
       description = "Go to game start";
     }
     return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+      <li key={move} className="list">
+        <button onClick={() => jumpTo(move)} className="button">{description}</button>
       </li>
     );
   });
